@@ -1,0 +1,109 @@
+#include <iostream>
+#include <vector>
+#include <memory>
+
+using namespace std;
+
+//***********************************************************************************
+//shared_ptr serve para compartilhar um ponteiro entre classes e                    *
+//evitar que o ponteiro seja deletado quando a classe que o criou                   *
+//for destruida                                                                     *
+//A vantagem de usar shared_ptr é que ele não precisa ser deletado                  *          
+//nem fazer gestão de memória, com o delete, pois ele faz isso automaticamente com  *
+//o uso do contador de referências                                                  *
+//***********************************************************************************
+
+//*******************************************************************************
+//Pode iniciar o construtor de duas formas:                                     *
+//1                                                                             * 
+//cat(string name) : name(name){}                                               *
+//2                                                                             *
+//cat(string name){                                                             *
+//  this->name = name;                                                          *
+//}                                                                             *
+//*******************************************************************************
+
+//dynamic_cast serve para converter um ponteiro de uma classe pai para uma classe filha.
+
+//virtual, manda o compilador procurar o metodo na classe filha.
+
+//classe pai
+class animal{
+    bool alive = {true};
+public:
+    //ligação tardia
+    //não inicia neste momento, só com o 0
+    virtual string speak() = 0;
+    virtual bool isAlive(){
+        return alive;
+    }
+    virtual void die(){
+        alive = false;
+    }
+    virtual string str(){
+        return string(alive ? "{alive}" : "{dead}");
+    }
+    
+};
+
+//classe filha
+class cat : public animal{
+    string name;
+    int vidas = 3;
+public:
+    cat(string name){
+        this->name =  name;
+    }
+    virtual void die(){
+        if(vidas > 0) vidas--;
+        else animal::die();
+    }
+    string speak(){
+        return isAlive() ? "miau" : "RIP";
+    }
+    virtual void licking(){
+        cout << "lambendo\n";
+    }
+    string str(){
+        return animal::str() + " cat " + name + ": " + to_string(vidas);
+    }
+};
+
+class dog : public animal{
+    string name;
+public:
+    dog(string name){
+        this->name = name;
+    }
+    string speak(){
+        return isAlive() ? "au au" : "RIP";
+    }
+    string str(){
+        return animal::str() + " dog " + name;
+    }
+};
+
+int main(){
+
+    vector <shared_ptr<animal>> animais;
+
+    animais.push_back(make_shared<cat>("bichano"));
+    animais.push_back(make_shared<dog>("rex"));
+    animais.push_back(make_shared<cat>("gato"));
+    animais.push_back(make_shared<dog>("cachorro"));
+
+    for (auto animal : animais){
+        animal->die();
+    }
+
+    for (auto i = animais.begin(); i < animais.end();){
+        auto vivo = (*i)->isAlive();
+        if (!vivo) i = animais.erase(i);
+        else i++;
+    }
+    
+    for (auto animal : animais){
+        cout << animal->str() << " says " << animal->speak() << endl;
+    }
+
+}
