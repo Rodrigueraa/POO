@@ -1,0 +1,49 @@
+    #include <iostream>
+    #include <vector>
+    #include <set>
+    #include <unordered_set>
+    #include <map>
+
+    using namespace std;
+
+    //Mapa serve para relacionar um valor a outro
+    //e para isso ele precisa de uma chave e um valor.
+    //A chave é o que vai identificar o valor.
+
+    //Set é usado quando quero listas de valores
+    //que não se repetem.
+    //Ele não tem chave, só valor.
+
+    int main() {
+
+        map <string, int> m({{"ana", 1}, {"bruno", 2}, {"bia", 3}}); //criando um mapa
+
+        // Também pode ser criado assim:
+        // map <string, int> m;
+        // m["ana"] = 1;
+        // m["bruno"] = 2;
+        // m["bia"] = 3;
+
+        //case: procurar um valor no mapa {
+        string i;
+        cin >> i;
+
+        auto x = m.find(i);
+        if (x != m.end()){
+            cout << "o valor de " << i <<" eh " << m[i] << "\n\n\n"; //ou x->second
+        } else {
+            cout << "nao achei o valor" << "\n"; 
+        } 
+        //}
+
+        //case: mostrar todos os valores do mapa {
+        for (auto x : m){
+            cout << x.first << " " << x.second << "\n"; //esse x.first é a chave e o x.second é o valor
+        }
+        //}
+
+        // A chave pode não sair ordenado, pois a chave é uma string e
+        // vai ser definida como lexográfica, ou seja, a ordem alfabética.
+        // A string não tem uma ordem definida, mas o valor sim.
+
+    }
