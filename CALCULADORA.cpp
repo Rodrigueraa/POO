@@ -1,6 +1,6 @@
 /*
 Feito em uma tarde.
-Me basieei no código do carro, o que facilitou.
+Me baseei no código do carro, o que facilitou.
 Precisei mudar o tipo da variavel q estava sendo passada em div, para float.
 */
 
