@@ -7,7 +7,6 @@ using namespace std;
 class classe{
     bool matriculado = {false};
     int matricula = rand() % 1000;
-    int maxEscola = 2;
 public:
     virtual bool isMatriculado(){
         return matriculado;
@@ -18,7 +17,6 @@ public:
     virtual void removerMatricula(){
         matriculado = false;
     }
-
     virtual string str(){
         return string (matriculado ? "{Matriculado - " + to_string(matricula) +"}" + "\nMatriculado com sucesso!\n" : "{Nao matriculado}\nNao foi possivel matricular o aluno\n");
     } 
@@ -28,19 +26,13 @@ class escola : public classe{
     string nome;
     int idd;
     int maxIdd = {17};
-    
 public:
-    escola(string nome, int idd){
-        this->nome = nome;
-        this->idd = idd;
-    }
+
+    escola(string nome, int idd) : nome(nome), idd(idd) {}
 
     virtual void matricular(){
-        if (idd <= maxIdd){
-            classe::matricular();
-        }
+        if (idd <= maxIdd) classe::matricular();
     }
-
     virtual string str(){
         return nome + " " + to_string(idd) + " " + classe::str();
     }
@@ -51,15 +43,12 @@ class universidade : public classe{
     int idd;
     int minIdd = {18};
 public:
-    universidade(string nome, int idd){
-        this->nome = nome;
-        this->idd = idd;
-    }
+
+    universidade(string nome, int idd) : nome(nome), idd(idd) {}
 
     virtual void matricular(){
         if (idd >= minIdd) classe::matricular();
     }
-
     virtual string str(){
         return nome + " " + to_string(idd) + " " + classe::str();
     }
@@ -80,9 +69,7 @@ int main(){
     for (auto classe : sistema){
         classe->matricular();
     }
-    
     for (auto classe : sistema){
         cout << classe->str() << endl;
     }
-    
 }   
